@@ -1,5 +1,5 @@
-$ python3 -m C2-main.main Bgm0504
-[GCS] WARNING: GCS_BUCKET_NAME not set — patent files cannot be loaded
+
+[STEP 1] Listing PDFs from GCS...
 Traceback (most recent call last):
   File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
     return _run_code(code, main_globals, None,
@@ -13,14 +13,30 @@ Traceback (most recent call last):
     return loop.run_until_complete(main)
   File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
     return future.result()
-  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 107, in run_single
-    from .tools import get_dimension_i_patent_data
-  File "/home/LNX-MOD/alloy_code/C2-main/tools.py", line 44, in <module>
-    from .indexer import (
-  File "/home/LNX-MOD/alloy_code/C2-main/indexer.py", line 33, in <module>
-    from .alloydb_client import AlloyDBClient
-  File "/home/LNX-MOD/alloy_code/C2-main/alloydb_client.py", line 103, in <module>
-    _ensure_schema()
-  File "/home/LNX-MOD/alloy_code/C2-main/alloydb_client.py", line 84, in _ensure_schema
-    cur.execute("""
-psycopg2.errors.UndefinedColumn: column "collection" does not exist
+  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 109, in run_single
+    result = await get_dimension_i_patent_data(
+  File "/home/LNX-MOD/alloy_code/C2-main/tools.py", line 233, in get_dimension_i_patent_data
+    pdf_refs = list_drug_pdf_filenames_from_gcs(drug_name)
+  File "/home/LNX-MOD/alloy_code/C2-main/gcs_lister.py", line 71, in list_drug_pdf_filenames_from_gcs
+    client    = get_gcs_client()
+  File "/home/LNX-MOD/alloy_code/C2-main/gcs_lister.py", line 52, in get_gcs_client
+    return gcs_storage.Client()
+  File "/home/LNX-MOD/.local/lib/python3.10/site-packages/google/cloud/storage/client.py", line 265, in __init__
+    super(Client, self).__init__(
+  File "/home/LNX-MOD/.local/lib/python3.10/site-packages/google/cloud/client/__init__.py", line 339, in __init__
+    _ClientProjectMixin.__init__(self, project=project, credentials=credentials)
+  File "/home/LNX-MOD/.local/lib/python3.10/site-packages/google/cloud/client/__init__.py", line 287, in __init__
+    project = self._determine_default(project)
+  File "/home/LNX-MOD/.local/lib/python3.10/site-packages/google/cloud/client/__init__.py", line 306, in _determine_default
+    return _determine_default_project(project)
+  File "/home/LNX-MOD/.local/lib/python3.10/site-packages/google/cloud/_helpers/__init__.py", line 152, in _determine_default_project
+    _, project = google.auth.default()
+  File "/home/LNX-MOD/.local/lib/python3.10/site-packages/google/auth/_default.py", line 714, in default
+    credentials, project_id = checker()
+  File "/home/LNX-MOD/.local/lib/python3.10/site-packages/google/auth/_default.py", line 707, in <lambda>
+    lambda: _get_explicit_environ_credentials(quota_project_id=quota_project_id),
+  File "/home/LNX-MOD/.local/lib/python3.10/site-packages/google/auth/_default.py", line 352, in _get_explicit_environ_credentials
+    credentials, project_id = load_credentials_from_file(
+  File "/home/LNX-MOD/.local/lib/python3.10/site-packages/google/auth/_default.py", line 178, in load_credentials_from_file
+    raise exceptions.DefaultCredentialsError(
+google.auth.exceptions.DefaultCredentialsError: File \home\lnx-mod\prod.json was not found.
