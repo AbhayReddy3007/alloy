@@ -68,6 +68,11 @@ def _ensure_schema():
     Create the embeddings table + indexes if they don't exist.
     If the table already exists (from the original a2.py setup), add
     the missing `collection` and `metadata` columns.
+
+    Note: AlloyDB/pgvector limits ANN indexes (HNSW/IVFFlat) to 2000
+    dimensions. Since gemini-embedding-001 produces 3072-dim vectors,
+    we skip vector indexes and use exact search (ORDER BY <=> LIMIT N).
+    This is perfectly fast for patent-scale data (hundreds of rows per drug).
     """
     conn = _get_conn()
     conn.autocommit = True
@@ -119,23 +124,33 @@ def _ensure_schema():
                     """)
                     print("[ALLOYDB] Added 'metadata' column")
 
-                # Migrate vector dimension from 768 to 3072 if needed
+                # Migrate vector dimension to 3072 if needed
+                # Must drop any vector indexes first (they block ALTER)
                 cur.execute("""
-                    SELECT udt_name, character_maximum_length
-                    FROM information_schema.columns
-                    WHERE table_name = 'embeddings' AND column_name = 'embedding'
+                    SELECT atttypmod FROM pg_attribute
+                    WHERE attrelid = 'embeddings'::regclass
+                    AND attname = 'embedding'
                 """)
                 row = cur.fetchone()
-                if row:
-                    # Drop HNSW index first (can't alter column type with it)
-                    cur.execute("DROP INDEX IF EXISTS idx_embeddings_hnsw")
+                current_dim = row[0] if row else 0
+                if current_dim != 3072:
+                    # Drop ALL vector indexes on the embedding column
+                    cur.execute("""
+                        SELECT indexname FROM pg_indexes
+                        WHERE tablename = 'embeddings'
+                        AND indexdef LIKE '%embedding%'
+                    """)
+                    for idx_row in cur.fetchall():
+                        cur.execute(f"DROP INDEX IF EXISTS {idx_row[0]}")
+                        print(f"[ALLOYDB] Dropped index '{idx_row[0]}' for dimension migration")
+
                     cur.execute("""
                         ALTER TABLE embeddings
                         ALTER COLUMN embedding TYPE vector(3072)
                     """)
-                    print("[ALLOYDB] Migrated embedding column from 768 → 3072 dimensions")
+                    print("[ALLOYDB] Migrated embedding column → 3072 dimensions")
 
-            # Create indexes (IF NOT EXISTS handles idempotency)
+            # Create non-vector indexes (IF NOT EXISTS handles idempotency)
             cur.execute("""
                 CREATE INDEX IF NOT EXISTS idx_embeddings_collection
                 ON embeddings (collection)
@@ -144,10 +159,9 @@ def _ensure_schema():
                 CREATE INDEX IF NOT EXISTS idx_embeddings_metadata_filename
                 ON embeddings ((metadata->>'filename'))
             """)
-            cur.execute("""
-                CREATE INDEX IF NOT EXISTS idx_embeddings_hnsw
-                ON embeddings USING hnsw (embedding vector_cosine_ops)
-            """)
+            # NOTE: No vector ANN index — AlloyDB limits HNSW/IVFFlat to 2000 dims.
+            # Exact search (ORDER BY embedding <=> query LIMIT N) is used instead.
+            # This is fast enough for patent-scale data (hundreds of rows per drug).
     finally:
         conn.close()
 
