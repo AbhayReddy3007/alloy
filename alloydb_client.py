@@ -134,11 +134,15 @@ def _ensure_schema():
                 row = cur.fetchone()
                 current_dim = row[0] if row else 0
                 if current_dim != 3072:
-                    # Drop ALL vector indexes on the embedding column
+                    # Drop vector indexes on the embedding column (skip PK/unique constraints)
                     cur.execute("""
-                        SELECT indexname FROM pg_indexes
-                        WHERE tablename = 'embeddings'
-                        AND indexdef LIKE '%embedding%'
+                        SELECT i.indexname
+                        FROM pg_indexes i
+                        LEFT JOIN pg_constraint c
+                            ON c.conname = i.indexname
+                        WHERE i.tablename = 'embeddings'
+                        AND i.indexdef LIKE '%%embedding%%'
+                        AND c.conname IS NULL
                     """)
                     for idx_row in cur.fetchall():
                         cur.execute(f"DROP INDEX IF EXISTS {idx_row[0]}")
