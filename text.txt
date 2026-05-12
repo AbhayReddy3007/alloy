@@ -1,0 +1,26 @@
+$ python3 -m C2-main.main Bgm0504
+[GCS] WARNING: GCS_BUCKET_NAME not set — patent files cannot be loaded
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 173, in <module>
+    main()
+  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 166, in main
+    result = asyncio.run(run_single(args.drug_name, args.reindex, args.jurisdictions))
+  File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 107, in run_single
+    from .tools import get_dimension_i_patent_data
+  File "/home/LNX-MOD/alloy_code/C2-main/tools.py", line 44, in <module>
+    from .indexer import (
+  File "/home/LNX-MOD/alloy_code/C2-main/indexer.py", line 33, in <module>
+    from .alloydb_client import AlloyDBClient
+  File "/home/LNX-MOD/alloy_code/C2-main/alloydb_client.py", line 103, in <module>
+    _ensure_schema()
+  File "/home/LNX-MOD/alloy_code/C2-main/alloydb_client.py", line 84, in _ensure_schema
+    cur.execute("""
+psycopg2.errors.UndefinedColumn: column "collection" does not exist
