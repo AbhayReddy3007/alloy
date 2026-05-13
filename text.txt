@@ -1,5 +1,3 @@
-$  python3 -m C2-main.main Bgm0504 --reindex
-[GCS] Config loaded: gs://cognito-gcs/Cognito_new/Master_patent_list/
 Traceback (most recent call last):
   File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
     return _run_code(code, main_globals, None,
@@ -8,20 +6,13 @@ Traceback (most recent call last):
   File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 173, in <module>
     main()
   File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 166, in main
-    result = asyncio.run(run_single(args.drug_name, args.reindex, args.jurisd                                                                                ictions))
+    result = asyncio.run(run_single(args.drug_name, args.reindex, args.jurisdictions))
   File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
     return loop.run_until_complete(main)
-  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_c                                                                                omplete
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
     return future.result()
-  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 107, in run_single
-    from .tools import get_dimension_i_patent_data
-  File "/home/LNX-MOD/alloy_code/C2-main/tools.py", line 44, in <module>
-    from .indexer import (
-  File "/home/LNX-MOD/alloy_code/C2-main/indexer.py", line 33, in <module>
-    from .alloydb_client import AlloyDBClient
-  File "/home/LNX-MOD/alloy_code/C2-main/alloydb_client.py", line 170, in <mo                                                                                dule>
-    _ensure_schema()
-  File "/home/LNX-MOD/alloy_code/C2-main/alloydb_client.py", line 144, in _en                                                                                sure_schema
-    cur.execute(f"DROP INDEX IF EXISTS {idx_row[0]}")
-psycopg2.errors.DependentObjectsStillExist: cannot drop index embeddings_pkey                                                                                 because constraint embeddings_pkey on table embeddings requires it
-HINT:  You can drop constraint embeddings_pkey on table embeddings instead.
+  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 114, in run_single
+    _print_single_drug_result(result)
+  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 57, in _print_single_drug_result
+    f"  {p.get('patent_number','?'):<20} "
+TypeError: unsupported format string passed to NoneType.__format__
