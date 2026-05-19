@@ -1,18 +1,54 @@
-Traceback (most recent call last):
-  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
-    return _run_code(code, main_globals, None,
-  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
-    exec(code, run_globals)
-  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 173, in <module>
-    main()
-  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 166, in main
-    result = asyncio.run(run_single(args.drug_name, args.reindex, args.jurisdictions))
-  File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
-    return future.result()
-  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 114, in run_single
-    _print_single_drug_result(result)
-  File "/home/LNX-MOD/alloy_code/C2-main/main.py", line 57, in _print_single_drug_result
-    f"  {p.get('patent_number','?'):<20} "
-TypeError: unsupported format string passed to NoneType.__format__
+field name	mode	type	description
+Drug_Name	NULLABLE	STRING	
+Patent_Number	NULLABLE	STRING	
+Jurisdiction	NULLABLE	STRING	
+Tag	NULLABLE	STRING	
+Blocking_Category	NULLABLE	STRING	
+Reason	NULLABLE	STRING	
+Step_1_Claim_Category	NULLABLE	STRING	
+Step_2_Matched_Elements	NULLABLE	STRING	
+S2_Active_Ingredient__Form	NULLABLE	STRING	
+S2_Formulation_Details	NULLABLE	STRING	
+S2_Route_of_Administration	NULLABLE	STRING	
+S2_Device_Description	NULLABLE	STRING	
+S2_Combination_TechProcess	NULLABLE	STRING	
+Step_3_Technical_Barrier	NULLABLE	STRING	
+Step_3_Confidence	NULLABLE	STRING	
+Step_3_Evidence_Type	NULLABLE	STRING	
+Step_3_Evidence_Summary	NULLABLE	STRING	
+Step_4_Blocking_Indicator	NULLABLE	STRING	
+Step_4_Confidence	NULLABLE	STRING	
+Step_4_Regulatory_Failure_if_Removed	NULLABLE	STRING	
+Step_4_Bridging_Studies_Required	NULLABLE	STRING	
+Step_4_Formulation_Consistent_Across_Phases	NULLABLE	STRING	
+Step_4_Reason	NULLABLE	STRING	
+Step_5_Novel__Difficult	NULLABLE	STRING	
+Step_5_Novelty_Signal	NULLABLE	STRING	
+Step_5_FirstinClass	NULLABLE	STRING	
+Step_5_Prior_Failed_Attempts	NULLABLE	STRING	
+Step_5_Complex_Implementation	NULLABLE	STRING	
+Step_5_Confidence	NULLABLE	STRING	
+Step_5_Reason	NULLABLE	STRING	
+Filing_Date	NULLABLE	STRING	
+Grant_Date	NULLABLE	STRING	
+PTE_months	NULLABLE	STRING	
+Pediatric_Exclusivity	NULLABLE	STRING	
+Phase	NULLABLE	STRING	
+Launch_Date	NULLABLE	STRING	
+Approval_Date	NULLABLE	STRING	
+Approval_Date_Source	NULLABLE	STRING	
+Est_Approval_Year	NULLABLE	STRING	
+Exclusivity_Year	NULLABLE	STRING	
+Controlling_Patent_Expiry_Year	NULLABLE	STRING	
+Years_to_Entry	NULLABLE	STRING	
+Avg_Years_to_Entry	NULLABLE	STRING	
+Score	NULLABLE	STRING	
+Avg_Years_to_Entry_US__EP	NULLABLE	STRING	
+IP_Dimension_1_Score	NULLABLE	STRING	
+Source_File	NULLABLE	STRING	
+Type	NULLABLE	STRING	
+No_Of_Forecasted_Patents	NULLABLE	STRING	
+Rationale		STRING	
+Report_Timestamp		TIMESTAMP	
+created_at		TIMESTAMP	
+updated_at		TIMESTAMP	
